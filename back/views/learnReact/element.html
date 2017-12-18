@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Element Type</title>
+  </head>
+  <body>
+    <div class="app">
+      learn React element
+    </div>
+    <div id="render">
+
+    </div>
+    <script src="/js/lib/react.js" charset="utf-8"></script>
+    <script src="/js/lib/react-dom.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var el = React.createElement('div', {
+        id: 'One'
+      }, 'I am from React!')
+
+      function Div(props, ...children){
+        return React.createElement('div', props, ...children)
+      }
+
+      var cls = React.createClass({
+        getDefaultProps: function(){
+          console.log('in get default props');
+          return {
+            from: 'defaultprops'
+          }
+        },
+        getInitialState: function(){
+          console.log('in initial state');
+          return {
+            name: 'test for react'
+          }
+        },
+        componentWillMount: function(){
+          console.log('component will mount');
+        },
+        componentDidMount: function(){
+          console.log('component did mount');
+        },
+        render: function(){
+          return React.createElement('div', {cls: 'true'})
+        }
+      })
+
+
+      var container = document.getElementById('render');
+      // ReactDOM.render(Div({className: 'fun'}, el, 'alalalal'), container);
+      ReactDOM.render(cls, container)
+    </script>
+  </body>
+</html>

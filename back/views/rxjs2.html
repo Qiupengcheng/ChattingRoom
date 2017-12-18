@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>rxjs 2</title>
+</head>
+<body>
+	RxJS
+<script src="/js/lib/Rx.js"></script>
+<script>
+// 	var sbj = new Rx.Subject();
+// 	console.log(sbj);
+// 	sbj.subscribe((x) => console.log(x, '-from a'));
+// 	sbj.subscribe((x) => console.log(x, '-from b'));
+// 	var obs = Rx.Observable.from([1,2,3,4]);
+// 	obs.subscribe(sbj);
+
+// 	console.log('.........')
+
+// 	var source = Rx.Observable.from([51,6,7,78,]);
+// 	var subject = new Rx.Subject();
+// 	var multicast = source.multicast(subject);
+
+// 	multicast.subscribe({
+// 		next: x => console.log(x, '- from a')
+// 	})
+
+// 	multicast.subscribe({
+// 		next: x => console.log(x, '- from b')
+// 	})
+
+// 	multicast.connect();
+
+	var source = Rx.Observable.interval(500);
+	var sbj = new Rx.Subject();
+	var refCount = source.multicast(sbj).refCount();
+	var subscription1, subscription2, subscriptionConnect;
+
+	console.log('observerA subscribe');
+	subscription1 = refCount.subscribe(x => console.log(x, '..from sA'));
+
+	setTimeout(function(){
+		console.log('observerB subscribe')
+		subscription2 = refCount.subscribe(x => console.log(x, '..from sB'));
+	}, 2000)
+
+	setTimeout(function(){
+		console.log('observerA unsubscribe')
+		subscription1.unsubscribe();
+	}, 4000)
+
+	setTimeout(function(){
+		console.log('observerB unsubscribe')
+		subscription2.unsubscribe();
+	}, 6000)
+
+</script>
+</body>
+</html>

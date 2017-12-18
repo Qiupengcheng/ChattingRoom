@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <title>安全支付</title>
+    <style media="screen">
+        body {
+            display: flex;
+            height: 50vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .tips {
+            text-align: center;
+        }
+        #mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<div class="tips">请求支付中...</div>
+<div id="mask"></div>
+<script th:inline="javascript">
+    var mask = document.getElementById('mask');
+    mask.addEventListener('touchmove', function(e){
+        e.stopPropagation()
+        e.preventDefault()
+    })
+    var orderInfo = {
+        "appId": /*[[${orderInfo.appId}]]*/,
+        "timeStamp": /*[[${orderInfo.timeStamp}]]*/,
+        "nonceStr": /*[[${orderInfo.nonceStr}]]*/,
+        "package": /*[[${orderInfo.packageStr}]]*/,
+        "signType": /*[[${orderInfo.signType}]]*/,
+        "paySign": /*[[${orderInfo.paySign}]]*/,
+        "callbackUrl": /*[[${callbackUrl}]]*/
+    }
+    if(typeof WeixinJSBridge === 'undefined'){
+        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false)
+    }else{
+        onBridgeReady()
+    }
+    function onBridgeReady(){
+        WeixinJSBridge.invoke('getBrandWCPayRequest', orderInfo, (res) => {
+          if(res.err_msg == "get_brand_wcpay_request:ok"){
+            if(orderInfo.callbackUrl !== 'empty'){
+              try{
+                window.location.replace(orderInfo.callbackUrl);
+              }catch(err){
+                window.location.href = orderInfo.callbackUrl
+              }
+            }else{
+              WeixinJSBridge.call('closeWindow');
+            }
+          }else{
+            WeixinJSBridge.call('closeWindow');
+          }
+    });
+    }
+</script>
+</body>
+</html>

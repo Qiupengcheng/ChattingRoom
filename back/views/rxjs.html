@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>RxJs</title>
+    <script src="/js/lib/Rx.js" charset="utf-8"></script>
+  </head>
+  <body>
+    <div class="">
+      RxJs
+    </div>
+    <button type="button" name="button" id="btn">click</button>
+    <script type="text/javascript">
+      var btn = document.getElementById('btn')
+      Rx.Observable.fromEvent(btn, 'click')
+        .throttleTime(1000)
+        .scan(count => ++count)
+        .subscribe(count => console.log(count))
+
+      // 创建一个消费者, create传入的参数，相当于一个执行器，
+      // 在observable.subscribe后调用
+      var observable = Rx.Observable.create(function(observer){
+        console.log('inner create');
+        observer.next(1);
+        observer.next(2);
+        // 调用.error后，observer不再接受后续的任何参数，
+        // 但是，后续代码仍然会继续执行
+        observer.error('..cuole')
+        console.log('...hainengzhixing') // 可以log出来
+        observer.next(3);
+        setTimeout(() => {
+          observer.next(4);
+          observer.complete();
+        }, 1000);
+      })
+
+      console.log('just before subscribe')
+
+      // push一个data，让消费者调用, 指定create中指定的执行器
+      observable.subscribe({
+        next: x => console.log('got value: '+x),
+        error: err => console.error('something error : '+ err),
+        complete: () => console.log('done')
+      })
+      console.log('just after subscribe');
+
+      var ob2 = Rx.Observable.create(function(observer){
+        // console.log('Hello')
+        // 模范代码-带异常处理
+        try {
+          observer.next(42)
+          observer.next(100)
+          observer.next(121)
+          observer.complete()
+        } catch (err) {
+          observer.error(err)
+        }
+      })
+
+      ob2.subscribe(function(x){
+        console.log(x)
+      })
+
+      ob2.subscribe(function(x){
+        console.log(x)
+      })
+
+      var ob3 = Rx.Observable.from([1,2,3,4]);
+      var ob3s = ob3.subscribe(x => console.log(x))
+      ob3s.unsubscribe();
+
+      // const ob4 = Rx.Observable.create(function(observer){
+      //   setInterval(() => {
+      //     observer.next(10)
+      //     console.log('interval ne') // 执行unsubscribe之后，还是会继续循环
+      //   }, 1000)
+      // })
+
+      // const ob4s = ob4.subscribe(function(x){
+      //   console.log(x)
+      // })
+      // window.ob4s = ob4s;
+      // ob4s.unsubscribe();
+      // 执行ob4s.unsubscribe()之后，停止循环；
+      // 怎么做到的？？？？..
+
+      const ob5 = Rx.Observable.interval(500);
+      const ob5c = Rx.Observable.interval(400);
+
+      const ob5s = ob5.subscribe(function(x){
+        console.log(x)
+      })
+
+      const ob5cs = ob5c.subscribe(function(x){
+        console.log(x,'..from child')
+      })
+
+      ob5s.add(ob5cs);
+
+      setTimeout(function(){
+        ob5s.unsubscribe();
+      }, 3000)
+
+    </script>
+  </body>
+</html>

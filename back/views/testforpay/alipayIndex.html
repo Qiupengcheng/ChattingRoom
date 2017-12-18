@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    <title>安全支付</title>
+    <style media="screen">
+        body {
+            display: flex;
+            height: 50vh;
+            align-items: center;
+            justify-content: center;
+        }
+        .tips {
+            text-align: center;
+        }
+        #mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<div class="tips">请求支付中...</div>
+<div id="mask"></div>
+<script th:inline="javascript">
+    var mask = document.getElementById('mask');
+    mask.addEventListener('touchmove', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+    })
+
+    try{
+        // 支付宝应该只需要一个tradeNO
+        var orderInfo = {
+            "callbackUrl": /*[[${callbackUrl}]]*/,
+            "tradeNO": /*[[${tradeNO}]]*/
+        }
+        function onAlipayBridgeReady () {
+            AlipayJSBridge.call('tradePay', {
+                tradeNO: orderInfo.tradeNO
+            }, function(result){
+              if(result.resultCode == '9000') {
+                if(orderInfo.callbackUrl !== 'empty'){
+                  try{
+                    window.location.replace(orderInfo.callbackUrl);
+                  }catch(err){
+                    window.location.href = orderInfo.callbackUrl
+                  }
+                }else{
+                  AlipayJSBridge.call('popWindow');
+                }
+              }
+            });
+        }
+        if (typeof AlipayJSBridge == "undefined"){
+            document.addEventListener('AlipayJSBridgeReady', onAlipayBridgeReady, true);
+        } else {
+            onAlipayBridgeReady();
+        }
+    }catch(err){
+        console.log('error')
+    }
+</script>
+</body>
+</html>

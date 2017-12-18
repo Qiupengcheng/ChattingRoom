@@ -1,0 +1,15 @@
+1、ReactElement 类型
+  {
+    $$typeof: REACT_ELEMENT_TYPE,  // 用来判断是否是react element类型
+    type: 'div',
+    ref: ... ,
+    props: {
+      ...
+    },
+    _owner: ...
+
+    __source: ..., // 有啥用
+    __self: ... , // 有什么用
+  }
+
+2、React.createElement 创建ReactElement

@@ -1,0 +1,5 @@
+1、void 0 的应用：
+  常见： if(a == void 0){...}
+  其中，void 0 等效于 undefined，用这个，避免undefined被重写引发的异常，也可以节省字节数；
+
+2、

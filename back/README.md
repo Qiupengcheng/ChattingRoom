@@ -1,2 +1,2 @@
-# ChattingRoom
-A chatting room built by koa2 + react
+# Koa-Example
+a node.js webserver example built by koa2

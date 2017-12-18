@@ -1,0 +1,25 @@
+1、ReactComponent，
+  {
+    props: ...,
+    context: ...,
+    refs: ...,
+
+    updater: xxx,  // !!!这个即为与具体平台确定的渲染方法
+  }
+
+2、React.createClass
+
+
+3、生命周期：
+  1、getDefaultProps：在mounted过程中执行，返回的对象将补足this.props中缺失的值，
+    （内部使用in操作符判断），［在getInitialState之前执行，所以无法在此方法内使用this.state］
+    方括号中这句话为源码 create-react-class下的factory.js中注释，感觉有点奇怪，需要写个
+    demo验证下
+
+  2、getInitialState：在mounted之前执行，返回的值将赋给this.state，作为初始化的state
+
+  3、
+
+3、refs机制
+  1、 每个组件初始化的时候，refs引用emptyObject模块创建的空对象；
+  2、

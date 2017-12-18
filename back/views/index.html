@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Koa-Example</title>
+	<meta charset="utf-8">
+	<meta name='viewport' content="width=device-width">
+	<link rel="stylesheet" type="text/css" href="/css/index.css">
+</head>
+<body class="index-page">
+	<div>Koa-Example</div>
+	<ul id="js-list"></ul>
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function(e){
+			var ndUl = document.querySelector('#js-list');
+			var docFrag = document.createDocumentFragment();
+
+			for(var i=0; i<10; i++){
+				var ndLi = document.createElement('li');
+				ndLi.innerText = i+1;
+				ndLi.setAttribute('data-index', i+1);
+				docFrag.appendChild(ndLi)
+			}
+
+			// event delegation
+			ndUl.addEventListener('click', function(e){
+				console.log(e);
+				var target = e.target;
+				if(target.tagName === 'LI'){
+					alert(target.getAttribute('data-index'))
+				}
+			})
+
+			ndUl.appendChild(docFrag);
+		})
+	</script>
+</body>
+</html>

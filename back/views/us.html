@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<title>UnderScore</title>
+	</head>
+	<body>
+		<div>UnderScore</div>
+		<script src='/js/lib/underscore.js'></script>
+		<script>
+			var arr1 = [1,2,3,4,5];
+			var arr2 = [2,3,4,3,'',3,4,0,5,false,3];
+
+			// Array Functions
+			// _.first
+
+			// first method， return firset
+			var a1 = _.first(arr1, 3);
+			var a2 = _.initial(arr1, 4);
+			console.log(a1);
+			console.log(a2);
+
+			var a3 = _.last(arr1, 2);
+			var a4 = _.rest(arr1); // 返回除第一个元素外的所有元素
+			console.log(a3, a4);
+
+			var a5 = _.compact(arr2);
+			console.log(a5);
+
+
+		</script>
+	</body>
+</html>
