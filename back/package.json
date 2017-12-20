@@ -14,8 +14,11 @@
     "gulp-htmlmin": "^3.0.0",
     "gulp-uglify": "^3.0.0",
     "koa": "^2.3.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-mysql-session": "^0.0.2",
     "koa-router": "^7.2.1",
     "koa-static": "^4.0.1",
+    "mysql": "^2.15.0",
     "rxjs": "^5.5.2"
   }
 }
