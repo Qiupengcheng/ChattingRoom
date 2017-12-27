@@ -1,25 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import middlewares from './middleware';
+import { BrowserRouter as Router, Route  } from 'react-router-dom';
 import App from './App';
-import {createStore, applyMiddleware} from 'redux'
-import { Provider } from 'react-redux'
-import reducer from 'reducers'
-import {
-    BrowserRouter as Router
-} from 'react-router-dom'
-import registerServiceWorker from './registerServiceWorker';
+import reducers from './redux/reducers';
+import rem from './utils/rem';
 
-const initState = {
-    status: 'INIT'
-}
-const store = createStore(reducer, initState)
+
+const store = createStore(reducers,
+	applyMiddleware(middlewares.apiMiddleware, middlewares.thunkMiddleware)
+);
+
+// rem适配方案
+rem();
 
 ReactDOM.render(
-    <Provider store={store}>
-        <Router>
-            <App />    
-        </Router>  
-    </Provider>            
-, document.getElementById('root'));
-registerServiceWorker();
+	<Provider store={store}>
+		<Router>
+			<Route path="/" component={App}/>
+		</Router>
+	</Provider>
+, document.getElementById('app'));

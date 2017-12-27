@@ -1,16 +1,18 @@
-import React, { Component } from 'react';
-import Home from 'containers/Home/Home'
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Todos from './views/todos/index';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <Home />
-      </div>
-    );
-  }
-}
+// 加载所有样式文件
+// import "./static/style/index.less";
+import "./static/style/todos.less";
 
+const App = (props) => {
+	return (
+		<div>
+
+			<Todos></Todos>
+		</div>
+	)
+};
+
+	
 export default App;
